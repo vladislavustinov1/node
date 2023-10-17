@@ -5,7 +5,9 @@ app.listen(3000, () => {
 });
 app.get(`/as/`, function (req, res) {
   res.send(`Hello peedoor`);
-  console.log(req.cookies);
+});
+app.post("/as/", function (req, res) {
+  console.log(req.body);
 });
 // import path from "path";
 // import { fileURLToPath } from "node:url";
