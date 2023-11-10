@@ -11,3 +11,25 @@ img {
   width: 450px;
   height: 300px;
 }
+* {
+  margin: 0;
+}
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 95vw;
+  height: 95vh;
+}
+.container__error-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-right: 50px;
+}
+.error-body__head {
+  font-size: 24px;
+}
+.error-body__main {
+  font-size: 20px;
+}

@@ -5,6 +5,9 @@ const path = require("path");
 const { nextTick } = require("process");
 
 const app = express();
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
+console.log(app.get(`env`));
 const port = "3000";
 
 const routeTest = "/test";
@@ -31,6 +34,7 @@ function logger(port, router) {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "views")));
 app.use(favicon(__dirname + "/public/favicon.ico"));
 
 app.get(routeTest, (req, res) => {
@@ -56,19 +60,6 @@ app.post(routeSlash, function (req, res) {
   res.end("/");
 });
 
-app.use((req, res, next) => {
-  const err = new Error("Couldn't get path");
-  err.staus = 404;
-  console.log(err);
-  next(err);
-});
-
-app.use((req, res, next) => {
-  const err = new Error("Could't get path");
-  err.status = 404;
-  console.log(err);
-  next(err);
-});
 app.get("env") == "production";
 console.log(app.get("env"));
 if (app.get("env") == "production") {
@@ -80,3 +71,24 @@ if (app.get("env") == "production") {
 app.listen(port, () => {
   console.log(`listen on port ${port}`);
 });
+//err hand
+app.use((req, res, next) => {
+  const err = new Error("Couldn't get path");
+  err.status = 404;
+  next(err);
+});
+
+if (app.get("env") != "development") {
+  app.use(function (err, req, res, next) {
+    console.log(err.status, err.message);
+    res.status = 404;
+    let image = new URL(
+      "http://photos1.blogger.com/x/blogger2/6533/16720282190093/320/140728/plain.gif"
+    );
+    res.render("error.ejs", { err, image });
+  });
+} else {
+  app.use(function (err, req, res, next) {
+    console.log(app.get("env"), err.status, err.message);
+  });
+}
