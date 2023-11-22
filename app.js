@@ -1,7 +1,9 @@
 const express = require("express");
+const mysql = require("mysql2");
 const favicon = require("express-favicon");
 const fs = require("fs");
 const path = require("path");
+const router = require("./routes/router");
 const { nextTick } = require("process");
 
 const app = express();
@@ -10,8 +12,6 @@ app.set("views", path.join(__dirname, "views"));
 console.log(app.get(`env`));
 const port = "3000";
 
-const routeTest = "/test";
-const routeSlash = "/";
 const filePath = path.join(__dirname, "tmp", "1.txt");
 const logg = ``;
 
@@ -20,16 +20,33 @@ fs.writeFile(filePath, `Сервер запущен. Порт: ${port}`, (err) =
   console.log("файл создан");
 });
 
-function logger(port, router) {
-  fs.appendFile(
-    filePath,
-    `\nЛогируем ping по адресу localhost:${port}${router}. Время: ${new Date()}`,
-    (err) => {
-      if (err) console.error(err);
-      console.log("файл переписан");
-    }
-  );
-}
+// MySQL server
+const connection = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  database: "usersdb2",
+  password: "Ou08194321003456123",
+});
+
+const sql = `create table if not exists users(
+  id int primary key auto_increment,
+  name varchar(255) not null,
+  age int not null
+)`;
+
+connection.query(sql, function (err, results) {
+  if (err) console.log(err);
+  console.log("Таблица создана");
+});
+
+const sql2 = `SELECT * FROM users`;
+
+connection.query(sql2, function (err, results) {
+  if (err) console.log(err);
+  console.log(results);
+});
+
+connection.end();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -46,30 +63,7 @@ app.use(
   )
 );
 app.use(favicon(__dirname + "/public/favicon.ico"));
-
-app.get(routeTest, (req, res) => {
-  logger(port, routeTest);
-  res.end("/test");
-});
-app.post(routeTest, (req, res) => {
-  console.log("Прошли по пути post/test");
-  logger(port, routeTest);
-  res.end("post/test");
-});
-console.log(__dirname + "/public/favicon.ico");
-app.get(routeSlash, function (req, res) {
-  logger(port, routeSlash);
-  res.end();
-});
-app.get(routeSlash, function (req, res) {
-  logger(port, routeSlash);
-  res.end("/");
-});
-app.post(routeSlash, function (req, res) {
-  logger(port, routeSlash);
-  res.end("/");
-});
-
+app.use(router);
 app.get("env") == "production";
 console.log(app.get("env"));
 if (app.get("env") == "production") {
