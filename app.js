@@ -13,7 +13,7 @@ console.log(app.get(`env`));
 const port = "3000";
 
 const filePath = path.join(__dirname, "tmp", "1.txt");
-const logg = ``;
+const logg = "";
 
 fs.writeFile(filePath, `Сервер запущен. Порт: ${port}`, (err) => {
   if (err) console.error(err);
