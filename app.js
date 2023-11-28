@@ -15,7 +15,7 @@ const port = "3000";
 const filePath = path.join(__dirname, "tmp", "1.txt");
 const logg = "";
 
-fs.writeFile(filePath, `Сервер запущен. Порт: ${port}`, (err) => {
+fs.writeFile(filePath, `Сервер запущен.. Порт: ${port}`, (err) => {
   if (err) console.error(err);
   console.log("файл создан");
 });
