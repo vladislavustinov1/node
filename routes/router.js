@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const fs = require("fs");
 const routers = express.Router();
+const register = require("../controllers/register");
 const routeTest = "/test";
 const routeSlash = "/";
 
@@ -25,10 +26,8 @@ function logger(port, router) {
     }
   );
 }
-
-routers.get("/register", function (req, res) {
-  res.render("register.ejs");
-});
+routers.get("/register", register.form);
+routers.get("/register", function (req, res) {});
 routers.post("/register", function (req, res) {
   console.log("Прошли по пути register/testing");
   logger(port, "/register");

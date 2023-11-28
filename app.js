@@ -21,32 +21,6 @@ fs.writeFile(filePath, `Сервер запущен. Порт: ${port}`, (err) =
 });
 
 // MySQL server
-const connection = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  database: "usersdb2",
-  password: "Ou08194321003456123",
-});
-
-const sql = `create table if not exists users(
-  id int primary key auto_increment,
-  name varchar(255) not null,
-  age int not null
-)`;
-
-connection.query(sql, function (err, results) {
-  if (err) console.log(err);
-  console.log("Таблица создана");
-});
-
-const sql2 = `SELECT * FROM users`;
-
-connection.query(sql2, function (err, results) {
-  if (err) console.log(err);
-  console.log(results);
-});
-
-connection.end();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
