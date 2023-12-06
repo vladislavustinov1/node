@@ -27,12 +27,10 @@ function logger(port, router) {
   );
 }
 routers.get("/register", register.form);
-routers.get("/register", function (req, res) {});
-routers.post("/register", function (req, res) {
-  console.log("Прошли по пути register/testing");
-  logger(port, "/register");
-  res.end("/register/testing");
-});
+routers.post("/register", register.submit);
+
+routers.get("/login", login.form);
+routers.post("/login", login.submit);
 routers.get(routeTest, (req, res) => {
   logger(port, routeTest);
   res.end("/test");
