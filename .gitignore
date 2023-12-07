@@ -1,2 +1,5 @@
 node_modules
 bootstrap-5.3.2
+bcrypt
+mysql2
+sqlite3

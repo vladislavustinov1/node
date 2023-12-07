@@ -3,6 +3,7 @@ const path = require("path");
 const fs = require("fs");
 const routers = express.Router();
 const register = require("../controllers/register");
+const login = require("../controllers/login");
 const routeTest = "/test";
 const routeSlash = "/";
 
@@ -31,6 +32,7 @@ routers.post("/register", register.submit);
 
 routers.get("/login", login.form);
 routers.post("/login", login.submit);
+
 routers.get(routeTest, (req, res) => {
   logger(port, routeTest);
   res.end("/test");

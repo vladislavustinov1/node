@@ -1,10 +1,10 @@
 const sqlite3 = require("sqlite3").verbose();
 const bcrypt = require("bcrypt");
-const res = require("express/lib/response");
+const res = require("../node_modules/express/lib/response");
 const db = new sqlite3.Database("test.sqlite");
 
 const sql =
-  "CREATE TABLE IF NOT EXISTS users(id INT PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, email TEXT NOT NULL, password TEXT NOT NULL, age INT NOT NULL)";
+  "CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, email TEXT NOT NULL, password TEXT NOT NULL, age INT NOT NULL)";
 
 db.run(sql);
 
@@ -22,18 +22,21 @@ class User {
       if (error) return next(error);
     }
   }
-
   static findByEmail(email, cb) {
     db.get("SELECT * FROM users WHERE email = ?", email, cb);
   }
 
   static authentificate(dataForm, cb) {
     User.findByEmail(dataForm.email, (error, user) => {
-      if (error) return cb(error);
-      if (!user) return cb();
+      if (error) {
+        return console.log(error);
+      } else if (!user) {
+        return console.log("Пользователя не существует");
+      } else {
+        const result = bcrypt.compare(dataForm.password, user.password);
+        if (result) return cb(user); // отправить пользователя на его страницу
+      }
     });
-
-    const result = bcrypt.compare(dataForm.password, user.password);
-    if (result) return cb(user);
   }
 }
+module.exports = User;
