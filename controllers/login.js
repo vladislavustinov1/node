@@ -5,15 +5,15 @@ exports.form = (req, res) => {
 
 exports.submit = (req, res, next) => {
   const userDataForm = req.body;
-  User.findByEmail(userDataForm.dataForm.email, (err, user) => {
+  User.findByEmail(userDataForm.emailLogin, (err, user) => {
+    if (err) return next(err);
     if (user) {
-      User.authentificate(userDataForm.user, (err) => {
+      User.authentificate(userDataForm, (err) => {
         if (err) {
           return next(err);
         }
       });
     }
   });
-  res.error("Неправильный логин или пароль");
   res.redirect("/");
 };

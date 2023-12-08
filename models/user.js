@@ -1,6 +1,6 @@
 const sqlite3 = require("sqlite3").verbose();
 const bcrypt = require("bcrypt");
-const res = require("../node_modules/express/lib/response");
+const res = require("express/lib/response");
 const db = new sqlite3.Database("test.sqlite");
 
 const sql =
@@ -10,7 +10,8 @@ db.run(sql);
 
 class User {
   constructor() {}
-  static async create(dataForm, cb) {
+  static async create(dataForm, next, cb) {
+    console.log(dataForm.email);
     try {
       const salt = await bcrypt.genSalt(10);
       const hash = await bcrypt.hash(dataForm.password, salt);
@@ -26,10 +27,11 @@ class User {
     db.get("SELECT * FROM users WHERE email = ?", email, cb);
   }
 
-  static authentificate(dataForm, cb) {
+  static authentificate(dataForm, next, cb) {
+    console.log(dataForm.email);
     User.findByEmail(dataForm.email, (error, user) => {
       if (error) {
-        return console.log(error);
+        return next(error);
       } else if (!user) {
         return console.log("Пользователя не существует");
       } else {

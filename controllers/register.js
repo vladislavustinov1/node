@@ -5,15 +5,17 @@ exports.form = (req, res) => {
 
 exports.submit = (req, res, next) => {
   const userDataForm = req.body;
-  User.findByEmail(userDataForm.dataForm.email, (err, user) => {
+  User.findByEmail(userDataForm.email, (err, user) => {
+    if (err) return next(err);
     if (!user) {
-      User.create(userDataForm.user, (err) => {
+      User.create(userDataForm, (err) => {
         if (err) {
           return next(err);
         }
       });
+    } else {
+      res.error("Пользователь уже существует");
     }
   });
-  res.error("Пользователь уже существует");
   res.redirect("/");
 };
