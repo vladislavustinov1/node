@@ -1,3 +1,4 @@
 exports.list = (req, res) => {
-  res.render("entries", { title: "Entries" });
+  const username = req.session.name;
+  res.render("entries", { title: "Entries", name: username });
 };

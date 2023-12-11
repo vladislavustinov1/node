@@ -27,16 +27,18 @@ class User {
     db.get("SELECT * FROM users WHERE email = ?", email, cb);
   }
 
-  static authentificate(dataForm, next, cb) {
+  static authentificate(dataForm, cb) {
     console.log(dataForm.email);
     User.findByEmail(dataForm.email, (error, user) => {
-      if (error) {
-        return next(error);
-      } else if (!user) {
-        return console.log("Пользователя не существует");
-      } else {
-        const result = bcrypt.compare(dataForm.password, user.password);
-        if (result) return cb(user); // отправить пользователя на его страницу
+      try {
+        if (!user) {
+          return console.log("Пользователя не существует");
+        } else {
+          const result = bcrypt.compare(dataForm.password, user.password);
+          if (result) return cb(null, user); // отправить пользователя на его страницу
+        }
+      } catch (error) {
+        console.error(`Ошибка в user.js: ${error}`);
       }
     });
   }

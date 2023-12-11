@@ -11,7 +11,11 @@
   <body>
     <%- include(`./partials/header`) %>
     <div class="klass">
-      <p>CommonJS</p>
+      <% if (name !== undefined) {%>
+      <p>Добро пожаловать, <%= name %></p>
+      <%} else { %>
+      <p>Вы не вошли в систему!</p>
+      <% } %>
       <img src="./img/img.jpg" alt="ghjfhgj" />
     </div>
     <%- include(`./partials/footer`) %>

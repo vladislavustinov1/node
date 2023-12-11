@@ -47,4 +47,14 @@ input:last-child {
   border: none;
   color: white;
   border-radius: 10px;
+}
+
+.btn-outline-danger > a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.btn-outline-success > a {
+  text-decoration: none;
+  color: inherit;
 }/*# sourceMappingURL=index.css.map */
