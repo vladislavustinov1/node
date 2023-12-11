@@ -1,7 +1,7 @@
 const express = require("express");
+const session = require("express-session");
 const mysql = require("mysql2");
 const favicon = require("express-favicon");
-const fs = require("fs");
 const path = require("path");
 const router = require("./routes/router");
 const { nextTick } = require("process");
@@ -12,44 +12,16 @@ app.set("views", path.join(__dirname, "views"));
 console.log(app.get(`env`));
 const port = "3000";
 
-const filePath = path.join(__dirname, "tmp", "1.txt");
-const logg = "";
-
-fs.writeFile(filePath, `Сервер запущен. Порт: ${port}`, (err) => {
-  if (err) console.error(err);
-  console.log("файл создан");
-});
-
-// MySQL server
-const connection = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  database: "usersdb2",
-  password: "Ou08194321003456123",
-});
-
-const sql = `create table if not exists users(
-  id int primary key auto_increment,
-  name varchar(255) not null,
-  age int not null
-)`;
-
-connection.query(sql, function (err, results) {
-  if (err) console.log(err);
-  console.log("Таблица создана");
-});
-
-const sql2 = `SELECT * FROM users`;
-
-connection.query(sql2, function (err, results) {
-  if (err) console.log(err);
-  console.log(results);
-});
-
-connection.end();
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+// express-session use
+app.use(
+  session({
+    secret: `secret`,
+    resave: false,
+    saveUninitialized: false,
+  })
+);
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.static(path.join(__dirname, "CSS")));
 app.use(express.static(path.join(__dirname, "views")));
@@ -64,17 +36,18 @@ app.use(
 );
 app.use(favicon(__dirname + "/public/favicon.ico"));
 app.use(router);
-app.get("env") == "production";
-console.log(app.get("env"));
+
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});
+
 if (app.get("env") == "production") {
   app.use((req, res, err) => {
     res.status(err.status);
     res.sendFile(err.message);
   });
 }
-app.listen(port, () => {
-  console.log(`listen on port ${port}`);
-});
+
 //err hand
 app.use((req, res, next) => {
   const err = new Error("Couldn't get path");
@@ -82,7 +55,7 @@ app.use((req, res, next) => {
   next(err);
 });
 
-if (app.get("env") != "development") {
+if (app.get("env") != "development" || app.get("")) {
   app.use(function (err, req, res, next) {
     console.log(err.status, err.message);
     res.status = 404;

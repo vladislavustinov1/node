@@ -18,6 +18,9 @@
         <% if (err.status == 404) {%>
         <h1><%=(err.message)%></h1>
         <img src="<%=image%>" alt="" />
+        <%} else if (err.status == 401) {%>
+        <h1><%=(err.message)%></h1>
+        <img src="<%=image%>" alt="" />
         <%}%>
       </div>
       <div class="container__error-img">

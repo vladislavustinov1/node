@@ -17,4 +17,44 @@ footer {
   --bs-btn-disabled-bg: transparent;
   --bs-btn-disabled-border-color: #198754;
   --bs-gradient: none;
+}
+
+.formRegister {
+  display: flex;
+  flex-direction: column;
+  width: 25%;
+  margin-top: 100px;
+  margin-bottom: 100px;
+  justify-content: center;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+}
+
+.labelRegister {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+input:last-child {
+  margin-top: 20px;
+  display: flex;
+  width: 175px;
+  height: 30px;
+  background-color: green;
+  border: none;
+  color: white;
+  border-radius: 10px;
+}
+
+.btn-outline-danger > a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.btn-outline-success > a {
+  text-decoration: none;
+  color: inherit;
 }/*# sourceMappingURL=index.css.map */

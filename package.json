@@ -12,12 +12,15 @@
   "author": "Nu Ya",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "ejs": "^3.1.9",
     "express": "^4.18.2",
     "express-favicon": "^2.0.4",
-    "mysql2": "^3.6.5"
+    "express-session": "^1.17.3",
+    "mysql2": "^3.6.5",
+    "sqlite3": "^5.1.6"
   },
   "devDependencies": {
-    "nodemon": "^3.0.1"
+    "nodemon": "^3.0.2"
   }
 }
