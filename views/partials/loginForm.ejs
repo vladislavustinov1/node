@@ -1,7 +1,7 @@
-<form action="/login" method="post" class="formRegister">
-  <label for="email" class="labelRegister">Введите почту</label>
-  <input type="email" name="email" id="email" />
-  <label for="password" class="labelRegister">Введите пароль</label>
-  <input type="password" name="password" id="password" />
+<form action="/login" method="post" id="loginForm" name="loginForm">
+  <label for="email">Ваша почта</label>
+  <input type="email" name="email" id="email" required />
+  <label for="password">Ваш пароль</label>
+  <input type="password" name="password" id="password" required />
   <input type="submit" value="Войти" />
 </form>

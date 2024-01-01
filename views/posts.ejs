@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+    <link rel="stylesheet" href="./css/reset.css" />
+    <link rel="stylesheet" href="/css/bootstrap.css" />
+    <link rel="stylesheet" href="./css/index.css" />
+  </head>
+  <body>
+    <%- include(`./partials/header`) %>
+    <div class="posts-container">
+      <% post.forEach((entry) => { %>
+      <div class="card entry" style="width: 66rem">
+        <div class="card-body">
+          <h5 class="card-title"><%= entry.title %></h5>
+          <p class="card-text"><%= entry.content %></p>
+          <h6>Запостил: <%= entry.author %></h6>
+          <% if (entry.email_author == email || role == "administrator") { %>
+          <div class="card-buttons">
+            <a href="/updateCard/<%= entry.id %>" class="card__update">
+              Изменить</a
+            >
+            <a href="/deleteCard/<%= entry.id %>" class="card__delete"
+              >Удалить</a
+            >
+          </div>
+          <% } %>
+        </div>
+      </div>
+      <% }); %>
+      <a href="/createPost" class="card__create"
+        ><button class="create__button">Выложить пост</button></a
+      >
+    </div>
+  </body>
+</html>

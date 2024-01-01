@@ -1,11 +1,13 @@
-<form action="/register" method="POST" class="formRegister" name="user">
-  <label for="name" class="labelRegister">Ваше имя</label>
+<form action="/register" method="post" name="registerForm">
+  <label for="name">Введите имя</label>
   <input type="text" name="name" id="name" required />
-  <label for="email" class="labelRegister">Ваша почта</label>
+  <label for="email">Введите почту</label>
   <input type="email" name="email" id="email" required />
-  <label for="password" class="labelRegister">Ваш пароль</label>
+  <label for="password">Введите пароль</label>
   <input type="password" name="password" id="password" required />
-  <label for="age" class="labelRegister">Ваш возраст</label>
-  <input type="text" name="age" id="age" required />
+  <label for="age">Ваш возраст</label>
+  <input type="number" name="age" id="age" required />
+  <label for="secret_word">Секретное слово для восстановления</label>
+  <input type="text" name="secret_word" id="secret_word" required />
   <input type="submit" value="Зарегистрироваться" />
 </form>
