@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/reset.css" />
+    <link rel="stylesheet" href="/css/bootstrap.css" />
+    <link rel="stylesheet" href="./css/index.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <%- include(`./partials/header`) %>
+    <div class="login-main">
+      <div class="main__login-container">
+        <div class="login__text-block">
+          <h4 class="text-block__header">Авторизуйтесь</h4>
+          <p class="text-block__desc">Для просмотра постов авторизуйтесь</p>
+        </div>
+        <%- include(`./partials/loginForm`) %>
+      </div>
+    </div>
+    <%- include(`./partials/footer`) %>
+  </body>
+</html>
