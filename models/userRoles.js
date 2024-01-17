@@ -7,7 +7,6 @@ class Role {
       host: "localhost",
       user: "root",
       database: "usersdb",
-      password: "Ou08194321003456123",
     });
 
     const [rows, fields] = await connection.query(
