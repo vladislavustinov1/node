@@ -9,7 +9,7 @@ class User {
       const connection = mysql.createConnection({
         host: "localhost",
         user: "root",
-        password: "Ou08194321003456123",
+  
       });
       const salt = await bcrypt.hash(dataFromForm.password, 10);
       const hash = await bcrypt.hash(dataFromForm.password, salt);
@@ -41,7 +41,7 @@ class User {
     const connection = mysql.createConnection({
       host: "localhost",
       user: "root",
-      password: "Ou08194321003456123",
+
     });
     connection.connect((err) => {
       if (err) throw err;
