@@ -7,7 +7,6 @@ class Post {
       host: "localhost",
       user: "root",
       database: "usersdb",
-      password: "Ou08194321003456123",
     });
     connection.connect((err) => {
       if (err) throw err;
@@ -31,7 +30,6 @@ class Post {
       host: "localhost",
       user: "root",
       database: "usersdb",
-      password: "Ou08194321003456123",
     });
     connection.connect((err) => {
       if (err) throw err;
@@ -44,7 +42,7 @@ class Post {
       host: "localhost",
       user: "root",
       database: "usersdb",
-      password: "Ou08194321003456123",
+ 
     });
     connection.connect((err) => {
       if (err) throw err;
@@ -61,7 +59,6 @@ class Post {
       host: "localhost",
       user: "root",
       database: "usersdb",
-      password: "Ou08194321003456123",
     });
     connection.connect((err) => {
       if (err) throw err;
@@ -78,7 +75,6 @@ class Post {
       host: "localhost",
       user: "root",
       database: "usersdb",
-      password: "Ou08194321003456123",
     });
     connection.connect((err) => {
       if (err) throw err;
