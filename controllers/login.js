@@ -1,21 +1,23 @@
 const User = require("../models/users");
-const Role = require("../models/userRoles");
+const logger = require("../logs/logger");
 
 exports.form = (req, res) => {
   const username = req.session.name;
-  const role = req.session.role;
   res.render("login", { username: username });
 };
 
 exports.login = (req, res, next) => {
   User.authenticate(req.body, (err, user) => {
-    if (err) return next(err);
+    if (err) {
+      logger.error(`Ошибка в login.js: ${err}`);
+    }
     if (!user) {
+      logger.info(`Неверный логин или пароль`);
       return console.error("Неверный логин или пароль");
     }
-    let userName = user.map((name) => name.username);
-    let userMail = user.map((mail) => mail.email);
-    let userRole = user.map((role) => role.rolesUser);
+    const userName = user.map((name) => name.username);
+    const userMail = user.map((mail) => mail.email);
+    const userRole = user.map((role) => role.rolesUser);
     req.session.name = userName[0];
     req.session.email = userMail[0];
     req.session.role = userRole[0];
@@ -25,7 +27,10 @@ exports.login = (req, res, next) => {
 exports.logout = (req, res, next) => {
   if (req.session.name) {
     req.session.destroy((err) => {
-      if (err) return next(err);
+      if (err) {
+        logger.error(`Ошибка при попытке выхода из системы: ${err}`);
+        next(err);
+      }
       res.redirect("/");
     });
   } else {

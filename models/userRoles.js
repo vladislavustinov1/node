@@ -5,7 +5,8 @@ class Role {
   static async roles() {
     const connection = await mysql.createConnection({
       host: "localhost",
-      user: "root",
+      user: process.env.MYSQL_LOGIN,
+      password: process.env.MYSQL_PASSWORD,
       database: "usersdb",
     });
 

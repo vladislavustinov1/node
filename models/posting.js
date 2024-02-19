@@ -1,11 +1,13 @@
 const mysql2 = require("mysql2");
+const logger = require("../logs/logger");
 
 class Post {
   constructor() {}
   static create(dataFromForm) {
     const connection = mysql2.createConnection({
       host: "localhost",
-      user: "root",
+      user: process.env.MYSQL_LOGIN,
+      password: process.env.MYSQL_PASSWORD,
       database: "usersdb",
     });
     connection.connect((err) => {
@@ -28,7 +30,8 @@ class Post {
   static async selectAll(functionForWork) {
     const connection = mysql2.createConnection({
       host: "localhost",
-      user: "root",
+      user: process.env.MYSQL_LOGIN,
+      password: process.env.MYSQL_PASSWORD,
       database: "usersdb",
     });
     connection.connect((err) => {
@@ -40,9 +43,9 @@ class Post {
   static async getPostById(postId, functionForWork) {
     const connection = mysql2.createConnection({
       host: "localhost",
-      user: "root",
+      user: process.env.MYSQL_LOGIN,
+      password: process.env.MYSQL_PASSWORD,
       database: "usersdb",
- 
     });
     connection.connect((err) => {
       if (err) throw err;
@@ -57,7 +60,8 @@ class Post {
   static async deletePost(postId, functionForWork) {
     const connection = mysql2.createConnection({
       host: "localhost",
-      user: "root",
+      user: process.env.MYSQL_LOGIN,
+      password: process.env.MYSQL_PASSWORD,
       database: "usersdb",
     });
     connection.connect((err) => {
@@ -73,7 +77,8 @@ class Post {
   static async updatePost(postId, newPostData, functionForWork) {
     const connection = mysql2.createConnection({
       host: "localhost",
-      user: "root",
+      user: process.env.MYSQL_LOGIN,
+      password: process.env.MYSQL_PASSWORD,
       database: "usersdb",
     });
     connection.connect((err) => {

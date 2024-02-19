@@ -2,9 +2,11 @@ const express = require("express");
 const session = require("express-session");
 const userSession = require("./middleware/user_session");
 const path = require("path");
-const ejs = require("ejs");
+require("dotenv").config();
 const favicon = require("express-favicon");
 const routes = require("./routes/routes");
+const logger = require("./logs/logger");
+const jwt = require("jsonwebtoken");
 
 const app = express();
 app.set("view engine", "ejs");

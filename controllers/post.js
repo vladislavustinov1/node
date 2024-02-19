@@ -1,11 +1,15 @@
 const posts = require(`../models/posting`);
+const logger = require("../logs/logger");
 
 exports.listPosts = (req, res, next) => {
   const username = req.session.name;
   const roleUser = req.session.role;
   const email = req.session.email;
   posts.selectAll((err, post) => {
-    if (err) return next(err);
+    if (err) {
+      logger.error(`Ошибка при выборе всех постов: ${err}`);
+      next(err);
+    }
     const userData = req.user;
     res.render("posts", {
       title: "List",
@@ -43,7 +47,10 @@ exports.releasePost = async (req, res) => {
 exports.deletePost = async (req, res, next) => {
   const postId = req.params.id;
   posts.deletePost(postId, (err) => {
-    if (err) return next(err);
+    if (err) {
+      logger.error(`Ошибка при удалении поста: ${err}`);
+      next(err);
+    }
   });
   await res.redirect("/posts");
 };
@@ -54,7 +61,7 @@ exports.updatePostForm = (req, res) => {
   const roleUser = req.session.role;
   posts.getPostById(postId, async (err, post) => {
     if (err) {
-      console.log(err);
+      logger.error(`${err}`);
       return res.redirect("posts");
     }
     await res.render("updateCard", {
@@ -72,7 +79,10 @@ exports.submitUpdatePost = async (req, res, next) => {
     content: req.body.post.content,
   };
   posts.updatePost(entryId, newData, (err) => {
-    if (err) return next(err);
+    if (err) {
+      logger.error(`Ошибка при создании поста ${err}`);
+      next(err);
+    }
   });
   await res.redirect("/");
 };
