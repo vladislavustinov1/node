@@ -15,3 +15,17 @@ const options = {
   jwtFromRequest: cookieExtractor,
   secretKey: process.env.SECRET_JWT,
 };
+function passportFunction(passport) {
+  passport.use(
+    new STRATEGY(options, function (jwt_payload, done) {
+      User.findByEmail(jwt_payload.name, (err, user) => {
+        if (err) throw err;
+        if (user) {
+          return done(null, user);
+        }
+        return done(err, null);
+      });
+    })
+  );
+}
+module.exports = passportFunction;
