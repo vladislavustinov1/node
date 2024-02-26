@@ -5,6 +5,7 @@ const path = require("path");
 require("dotenv").config();
 const favicon = require("express-favicon");
 const routes = require("./routes/routes");
+const cookieParser = require("cookie-parser");
 const logger = require("./logs/logger");
 const jwt = require("jsonwebtoken");
 
@@ -23,6 +24,7 @@ app.use(
     saveUninitialized: true,
   })
 );
+app.use(cookieParser(process.env.SECRET));
 app.use(userSession);
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.static(path.join(__dirname, "css")));
