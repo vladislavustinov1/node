@@ -8,7 +8,7 @@ const passport = require("passport");
 
 routes.get("/", (req, res) => {
   const role = req.session.role;
-  res.render("mainPage", {
+  return res.render("mainPage", {
     title: "Главная",
     role: role,
   });

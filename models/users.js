@@ -17,7 +17,7 @@ class User {
       const rolesUsers = await RolesUser.roles();
       connection.connect((err) => {
         if (err) throw err;
-        connection.query(`USE usersdb`, (err, res) => {
+        connection.query(`USE usersdb`, (err) => {
           if (err) throw err;
         });
         connection.query(
@@ -47,12 +47,12 @@ class User {
     });
     connection.connect((err) => {
       if (err) throw err;
-      connection.query(`USE usersdb`, (err, res) => {
+      connection.query(`USE usersdb`, (err) => {
         if (err) throw err;
       });
       connection.query(
         `SELECT * FROM users WHERE email = ?`,
-        dataFromForm,
+        [dataFromForm],
         functionForWork
       );
       connection.end();
@@ -69,9 +69,10 @@ class User {
         const res = bcrypt.compare(
           dataFromForm.password,
           DataBasePassword,
-          (err, res) => {
-            if (res) return functionForWork(null, searchUser);
-            return functionForWork(err, null);
+          (err, result) => {
+            result
+              ? functionForWork(null, searchUser)
+              : functionForWork(err, null);
           }
         );
       }

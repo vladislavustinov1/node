@@ -13,7 +13,7 @@ const cookieExtractor = function (req) {
 };
 const options = {
   jwtFromRequest: cookieExtractor,
-  secretKey: process.env.SECRET_JWT,
+  secretOrKey: process.env.SECRET_JWT,
 };
 function passportFunction(passport) {
   passport.use(
@@ -23,7 +23,7 @@ function passportFunction(passport) {
         if (user) {
           return done(null, user);
         }
-        return done(err, null);
+        return done(null, false);
       });
     })
   );

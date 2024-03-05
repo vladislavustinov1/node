@@ -14,26 +14,28 @@ exports.login = (req, res, next) => {
     }
     if (!user) {
       logger.info(`Неверный логин или пароль`);
-      return console.error("Неверный логин или пароль");
+      console.error("Неверный логин или пароль");
+      res.redirect("/");
+    } else {
+      const userName = user.map((name) => name.username);
+      const userMail = user.map((mail) => mail.email);
+      const userRole = user.map((role) => role.rolesUser);
+      req.session.name = userName[0];
+      req.session.email = userMail[0];
+      req.session.role = userRole[0];
+      const token = jwt.sign(
+        {
+          name: userName,
+        },
+        process.env.SECRET_JWT,
+        {
+          expiresIn: 3600000,
+        }
+      );
+      res
+        .cookie("access_token", token, { httpOnly: true, maxAge: 3600000 })
+        .redirect("/");
     }
-    const userName = user.map((name) => name.username);
-    const userMail = user.map((mail) => mail.email);
-    const userRole = user.map((role) => role.rolesUser);
-    req.session.name = userName[0];
-    req.session.email = userMail[0];
-    req.session.role = userRole[0];
-    const token = jwt.sign(
-      {
-        name: req.session.name,
-      },
-      process.env.SECRET_JWT,
-      {
-        expiresIn: 3600000,
-      }
-    );
-    res
-      .cookie("access_token", token, { httpOnly: true, maxAge: 3600000 })
-      .redirect("/");
   });
 };
 exports.logout = (req, res, next) => {
