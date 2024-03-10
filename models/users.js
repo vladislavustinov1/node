@@ -64,7 +64,7 @@ class User {
       if (searchUser < 1) {
         return next("Пользователь не найден");
       } else {
-        const DataBasePassword = searchUser.map((pass) => pass.password);
+        let DataBasePassword = searchUser.map((pass) => pass.password);
         DataBasePassword = DataBasePassword.join("");
         const res = bcrypt.compare(
           dataFromForm.password,

@@ -6,6 +6,9 @@ require("dotenv").config();
 const favicon = require("express-favicon");
 const routes = require("./routes/routes");
 const logger = require("./logs/logger");
+const passport = require("passport");
+const passportFunction = require("./middleware/passport");
+const cookieSession = require("cookie-parser");
 const jwt = require("jsonwebtoken");
 
 const app = express();
@@ -23,6 +26,12 @@ app.use(
     saveUninitialized: true,
   })
 );
+
+app.use(passport.initialize());
+passportFunction(passport);
+app.use(passport.session());
+
+app.use(cookieSession());
 app.use(userSession);
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.static(path.join(__dirname, "css")));

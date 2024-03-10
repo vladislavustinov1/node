@@ -18,21 +18,23 @@ exports.registerUser = (req, res, next) => {
       req.session.email = req.body.email;
       console.log(req.session.email);
       req.session.name = req.body.name;
+      // jwt generation
+      const token = jwt.sign(
+        {
+          username: req.body.email,
+          email: req.body.name,
+        },
+        process.env.SECRET_JWT,
+        {
+          expiresIn: 36000000000,
+        }
+      );
+      logger.info(
+        `Токен создан для: ${req.body.email}, ${req.body.name}. Значение токена: ${token}`
+      );
+      res
+        .cookie("jwt", token, { httpOnly: true, maxAge: 36000000000 })
+        .redirect("/");
     });
-    // jwt generation
-    const token = jwt.sign(
-      {
-        username: req.body.email,
-        email: req.body.name,
-      },
-      process.env.SECRET_JWT,
-      {
-        expiresIn: 60 * 60,
-      }
-    );
-    logger.info(
-      `Токен создан для: ${req.body.email}, ${req.body.name}. Значение токена: ${token}`
-    );
   });
-  res.redirect("/");
 };
