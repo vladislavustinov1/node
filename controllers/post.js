@@ -22,8 +22,15 @@ exports.listPosts = (req, res, next) => {
   });
 };
 exports.form = (req, res) => {
-  const username = req.session.name;
-  const roleUser = req.session.role;
+  let username;
+  let roleUser;
+  if (req.session.name) {
+    username = req.session.name;
+    roleUser = req.session.role;
+  } else if (req.session.passport) {
+    username = req.session.passport.name;
+    roleUser = "user";
+  }
 
   res.render("createPost", {
     title: "Опубликовать",

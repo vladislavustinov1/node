@@ -7,7 +7,7 @@ const favicon = require("express-favicon");
 const routes = require("./routes/routes");
 const logger = require("./logs/logger");
 const passport = require("passport");
-const passportFunction = require("./middleware/passport");
+const passportFunction = require("./middleware/passport_yandex");
 const cookieSession = require("cookie-parser");
 const jwt = require("jsonwebtoken");
 

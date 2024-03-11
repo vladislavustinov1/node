@@ -44,6 +44,7 @@ exports.login = (req, res, next) => {
 exports.logout = (req, res, next) => {
   if (req.session.name) {
     res.clearCookie("jwt");
+    res.clearCookie("connect.sid");
     req.session.destroy((err) => {
       if (err) {
         logger.error(`Ошибка при попытке выхода из системы: ${err}`);
