@@ -3,13 +3,12 @@ const YandexStrategy = require("passport-yandex").Strategy;
 const User = require("../models/users");
 const logger = require("../logs/logger");
 require("dotenv").config();
-const appToken = process.env.APP_TOKEN;
 
 function passportFunction(passport) {
   passport.serializeUser(function (user, done) {
     const newUser = {
       id: user.id,
-      name: user.displayName,
+      username: user.displayName,
       email: user.emails[0].value,
       age: user.birthday ? Date.now() - user.birthday : 20,
     };

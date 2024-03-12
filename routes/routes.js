@@ -50,4 +50,17 @@ routes.get(
   }
 );
 
+routes.get(
+  "/auth/google",
+  passport.authenticate("google", { scope: ["email", "profile"] })
+);
+
+routes.get(
+  "/auth/google/callback",
+  passport.authenticate("google", {
+    successRedirect: "/posts",
+    failureRedirect: "/login",
+  })
+);
+
 module.exports = routes;

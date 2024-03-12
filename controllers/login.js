@@ -42,19 +42,13 @@ exports.login = (req, res, next) => {
   });
 };
 exports.logout = (req, res, next) => {
-  if (req.session.name) {
-    res.clearCookie("jwt");
-    res.clearCookie("connect.sid");
-    req.session.destroy((err) => {
-      if (err) {
-        logger.error(`Ошибка при попытке выхода из системы: ${err}`);
-        next(err);
-      }
-      res.redirect("/");
-    });
-  } else {
-    return console.error(
-      "Не удалось удалить сессию. Возможно, вы не авторизованы"
-    );
-  }
+  res.clearCookie("jwt");
+  res.clearCookie("connect.sid");
+  req.session.destroy((err) => {
+    if (err) {
+      logger.error(`Ошибка при попытке выхода из системы: ${err}`);
+      next(err);
+    }
+    res.redirect("/");
+  });
 };

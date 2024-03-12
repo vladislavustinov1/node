@@ -8,6 +8,7 @@ const routes = require("./routes/routes");
 const logger = require("./logs/logger");
 const passport = require("passport");
 const passportFunction = require("./middleware/passport_yandex");
+const passportFunctionGoogle = require("./middleware/passport_google");
 const cookieSession = require("cookie-parser");
 const jwt = require("jsonwebtoken");
 
@@ -29,12 +30,14 @@ app.use(
 
 app.use(passport.initialize());
 passportFunction(passport);
+passportFunctionGoogle(passport);
 app.use(passport.session());
 
 app.use(cookieSession());
 app.use(userSession);
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.static(path.join(__dirname, "css")));
+app.use(express.static(path.join(__dirname, "images")));
 app.use(
   "/css/bootstrap.css",
   express.static(
