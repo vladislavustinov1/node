@@ -36,12 +36,6 @@ routes.get(
     // function will not be called
   }
 );
-
-// GET /auth/yandex/callback
-//   Use passport.authenticate() as route middleware to authenticate the
-//   request.  If authentication fails, the user will be redirected back to the
-//   login page.  Otherwise, the primary route function function will be called,
-//   which, in this example, will redirect the user to the home page.
 routes.get(
   "/auth/yandex/callback",
   passport.authenticate("yandex", { failureRedirect: "/login" }),
@@ -54,13 +48,34 @@ routes.get(
   "/auth/google",
   passport.authenticate("google", { scope: ["email", "profile"] })
 );
-
 routes.get(
   "/auth/google/callback",
   passport.authenticate("google", {
     successRedirect: "/posts",
     failureRedirect: "/login",
   })
+);
+
+routes.get("/auth/vkontakte", passport.authenticate("vkontakte"));
+routes.get(
+  "/auth/vkontakte/callback",
+  passport.authenticate("vkontakte", {
+    successRedirect: "/posts",
+    failureRedirect: "/login",
+  })
+);
+
+routes.get(
+  "/auth/github",
+  passport.authenticate("github", { scope: ["user:email"] })
+);
+routes.get(
+  "/auth/github/callback",
+  passport.authenticate("github", { failureRedirect: "/login" }),
+  function (req, res) {
+    // Successful authentication, redirect home.
+    res.redirect("/posts");
+  }
 );
 
 module.exports = routes;
