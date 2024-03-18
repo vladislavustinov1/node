@@ -4,18 +4,6 @@ const logger = require("../logs/logger");
 require("dotenv").config();
 
 function passportFunctionYandex(passport) {
-  passport.serializeUser(function (user, doneYA) {
-    console.log("Yandex serialize");
-    const newUser = {
-      id: user.id,
-      username: user.displayName,
-      email: Array.isArray(user.emails) ? user.emails[0].value : user.email,
-      age: user.birthday ? Date.now() - user.birthday : 20,
-    };
-    return doneYA(null, newUser);
-  });
-
-  passport.deserializeUser((obj, doneYA) => doneYA(null, obj));
   passport.use(
     new YandexStrategy(
       {
