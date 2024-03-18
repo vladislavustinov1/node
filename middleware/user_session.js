@@ -9,7 +9,6 @@ module.exports = (req, res, next) => {
     });
   } else if (req.session.passport) {
     res.locals.user = req.session.passport.user;
-    console.log(res.locals.user);
     next();
   } else {
     return next();

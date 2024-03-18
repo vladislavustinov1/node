@@ -4,6 +4,7 @@ require("dotenv").config();
 
 function passportFunctionGoogle(passport) {
   passport.serializeUser((user, done) => {
+    console.log("Google serialize");
     const newUser = {
       id: user.id,
       username: user.displayName,

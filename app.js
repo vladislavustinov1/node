@@ -29,17 +29,17 @@ app.use(
     saveUninitialized: true,
   })
 );
+app.use(cookieSession());
+app.use(userSession);
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 passportFunctionGithub(passport);
 passportFunctionYandex(passport);
 passportFunctionGoogle(passport);
 passportFunctionVKontakte(passport);
 
-app.use(passport.initialize());
-app.use(passport.session());
-
-app.use(cookieSession());
-app.use(userSession);
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.static(path.join(__dirname, "css")));
 app.use(express.static(path.join(__dirname, "images")));

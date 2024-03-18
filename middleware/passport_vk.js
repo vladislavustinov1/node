@@ -3,19 +3,6 @@ const VKontakteStrategy = require("passport-vkontakte").Strategy;
 require("dotenv").config();
 
 function passportFunctionVKontakte(passport) {
-  passport.serializeUser((user, doneVK) => {
-    const newUserVK = {
-      id: user.id,
-      username: user.displayName,
-      age: user.age ? user.age : 18,
-      email: user.email ? user.email : "vk_test@gmail.com",
-    };
-    return doneVK(null, newUserVK);
-  });
-
-  passport.deserializeUser(function (id, doneVK) {
-    return doneVK(null, id);
-  });
   passport.use(
     new VKontakteStrategy(
       {

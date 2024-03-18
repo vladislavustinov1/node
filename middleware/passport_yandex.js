@@ -5,6 +5,7 @@ require("dotenv").config();
 
 function passportFunctionYandex(passport) {
   passport.serializeUser(function (user, doneYA) {
+    console.log("Yandex serialize");
     const newUser = {
       id: user.id,
       username: user.displayName,
