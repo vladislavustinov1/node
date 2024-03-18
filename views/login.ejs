@@ -17,6 +17,20 @@
           <p class="text-block__desc">Для просмотра постов авторизуйтесь</p>
         </div>
         <%- include(`./partials/loginForm`) %>
+        <div class="col-12 col-sm-4 align-items-center icons">
+          <a href="/auth/yandex" class="btn btn-info"
+            ><img src="/images/YA.png" alt="ЯНДЕКС"
+          /></a>
+          <a href="/auth/google" class="btn btn-info"
+            ><img src="/images/GUGL.png" alt="ГУГЛ"
+          /></a>
+          <a href="/auth/github" class="btn btn-info"
+            ><img src="/images/GIT.png" alt="ГИТХАБ"
+          /></a>
+          <a href="/auth/vkontakte" class="btn btn-info"
+            ><img src="/images/VK.png" alt="ВК"
+          /></a>
+        </div>
       </div>
     </div>
     <%- include(`./partials/footer`) %>

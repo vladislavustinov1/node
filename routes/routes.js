@@ -3,6 +3,7 @@ const routes = express.Router();
 const register = require("../controllers/registerController");
 const login = require("../controllers/login");
 const post = require("../controllers/post");
+const passport = require("passport");
 const checkValidity = require("../middleware/validate_data");
 
 routes.get("/", (req, res) => {
@@ -26,5 +27,55 @@ routes.post("/createPost", post.releasePost);
 routes.get("/updateCard/:id", post.updatePostForm);
 routes.post("/updateCard/:id", post.submitUpdatePost);
 routes.get("/deleteCard/:id", post.deletePost);
+
+routes.get(
+  "/auth/yandex",
+  passport.authenticate("yandex"),
+  function (req, res) {
+    // The request will be redirected to Yandex for authentication, so this
+    // function will not be called
+  }
+);
+routes.get(
+  "/auth/yandex/callback",
+  passport.authenticate("yandex", { failureRedirect: "/login" }),
+  function (req, res) {
+    res.redirect("/posts");
+  }
+);
+
+routes.get(
+  "/auth/google",
+  passport.authenticate("google", { scope: ["email", "profile"] })
+);
+routes.get(
+  "/auth/google/callback",
+  passport.authenticate("google", {
+    successRedirect: "/posts",
+    failureRedirect: "/login",
+  })
+);
+
+routes.get("/auth/vkontakte", passport.authenticate("vkontakte"));
+routes.get(
+  "/auth/vkontakte/callback",
+  passport.authenticate("vkontakte", {
+    successRedirect: "/posts",
+    failureRedirect: "/login",
+  })
+);
+
+routes.get(
+  "/auth/github",
+  passport.authenticate("github", { scope: ["user:email"] })
+);
+routes.get(
+  "/auth/github/callback",
+  passport.authenticate("github", { failureRedirect: "/login" }),
+  function (req, res) {
+    // Successful authentication, redirect home.
+    res.redirect("/posts");
+  }
+);
 
 module.exports = routes;

@@ -2,15 +2,15 @@ const posts = require(`../models/posting`);
 const logger = require("../logs/logger");
 
 exports.listPosts = (req, res, next) => {
-  const username = req.session.name;
-  const roleUser = req.session.role;
-  const email = req.session.email;
+  const username = res.locals.user.username;
+  const roleUser = req.session.role ? req.session.role : "user";
+  const email = res.locals.user.email;
   posts.selectAll((err, post) => {
     if (err) {
       logger.error(`Ошибка при выборе всех постов: ${err}`);
       next(err);
     }
-    const userData = req.user;
+    const userData = res.locals.user;
     res.render("posts", {
       title: "List",
       post: post,
@@ -22,9 +22,8 @@ exports.listPosts = (req, res, next) => {
   });
 };
 exports.form = (req, res) => {
-  const username = req.session.name;
-  const roleUser = req.session.role;
-
+  let username = res.locals.user.username;
+  let roleUser = req.session.role ? req.session.role : "user";
   res.render("createPost", {
     title: "Опубликовать",
     name: username,
@@ -32,8 +31,8 @@ exports.form = (req, res) => {
   });
 };
 exports.releasePost = async (req, res) => {
-  const username = req.session ? req.session.name : null;
-  const email = req.session.email;
+  const username = res.locals.user.username;
+  const email = res.locals.user.email;
   const data = req.body.entry;
   const entry = {
     username: username,
@@ -57,8 +56,8 @@ exports.deletePost = async (req, res, next) => {
 
 exports.updatePostForm = (req, res) => {
   const postId = req.params.id;
-  const username = req.session.name;
-  const roleUser = req.session.role;
+  const username = res.locals.user.username;
+  const roleUser = req.session.role ? req.session.role : "user";
   posts.getPostById(postId, async (err, post) => {
     if (err) {
       logger.error(`${err}`);
