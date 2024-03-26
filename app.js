@@ -12,6 +12,7 @@ const passportFunctionGoogle = require("./middleware/passport_google");
 const passportFunctionVKontakte = require("./middleware/passport_vk");
 const passportFunctionGithub = require("./middleware/passport_github");
 const cookieSession = require("cookie-parser");
+const { sequelize } = require("./config/config");
 const jwt = require("jsonwebtoken");
 
 const app = express();
@@ -55,6 +56,7 @@ app.use(
 app.use(favicon(path.join(__dirname, "public", "favicon.ico")));
 app.use(routes);
 
-app.listen(port, () => {
+app.listen(port, async () => {
+  await sequelize.sync();
   console.log(`Server running on port ${port}`);
 });

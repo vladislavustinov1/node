@@ -1,24 +1,20 @@
-const posts = require(`../models/posting`);
+const Post = require(`../models/posting`);
+const { Posts } = require("../config/config");
 const logger = require("../logs/logger");
 
-exports.listPosts = (req, res, next) => {
+exports.listPosts = async (req, res, next) => {
   const username = res.locals.user.username;
   const roleUser = req.session.role ? req.session.role : "user";
   const email = res.locals.user.email;
-  posts.selectAll((err, post) => {
-    if (err) {
-      logger.error(`Ошибка при выборе всех постов: ${err}`);
-      next(err);
-    }
-    const userData = res.locals.user;
-    res.render("posts", {
-      title: "List",
-      post: post,
-      user: userData,
-      role: roleUser,
-      name: username,
-      email: email,
-    });
+  const post = await Posts.findAll();
+  const userData = res.locals.user;
+  res.render("posts", {
+    title: "List",
+    post: post,
+    user: userData,
+    role: roleUser,
+    name: username,
+    email: email,
   });
 };
 exports.form = (req, res) => {
@@ -34,41 +30,38 @@ exports.releasePost = async (req, res) => {
   const username = res.locals.user.username;
   const email = res.locals.user.email;
   const data = req.body.entry;
-  const entry = {
-    username: username,
+  await Posts.create({
     title: data.title,
     content: data.content,
-    email: email,
-  };
-  posts.create(entry);
+    author: username,
+    email_author: email,
+  });
   await res.redirect("/posts");
 };
 exports.deletePost = async (req, res, next) => {
   const postId = req.params.id;
-  posts.deletePost(postId, (err) => {
-    if (err) {
-      logger.error(`Ошибка при удалении поста: ${err}`);
-      next(err);
-    }
+  await Posts.destroy({
+    where: {
+      id: postId,
+    },
   });
   await res.redirect("/posts");
 };
 
-exports.updatePostForm = (req, res) => {
+exports.updatePostForm = async (req, res) => {
   const postId = req.params.id;
   const username = res.locals.user.username;
   const roleUser = req.session.role ? req.session.role : "user";
-  posts.getPostById(postId, async (err, post) => {
-    if (err) {
-      logger.error(`${err}`);
-      return res.redirect("posts");
-    }
-    await res.render("updateCard", {
-      title: "Изменение поста",
-      post: post,
-      name: username,
-      role: roleUser,
-    });
+  const post = await Posts.findAll({
+    where: {
+      id: postId,
+    },
+  });
+  await res.render("updateCard", {
+    title: "Изменение поста",
+    post: post,
+    name: username,
+    role: roleUser,
   });
 };
 exports.submitUpdatePost = async (req, res, next) => {
@@ -77,11 +70,13 @@ exports.submitUpdatePost = async (req, res, next) => {
     title: req.body.post.title,
     content: req.body.post.content,
   };
-  posts.updatePost(entryId, newData, (err) => {
-    if (err) {
-      logger.error(`Ошибка при создании поста ${err}`);
-      next(err);
+  await Posts.update(
+    { ...newData },
+    {
+      where: {
+        id: entryId,
+      },
     }
-  });
-  await res.redirect("/");
+  );
+  await res.redirect("/posts");
 };
