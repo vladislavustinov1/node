@@ -1,5 +1,5 @@
-const Post = require(`../models/posting`);
 const { Posts } = require("../config/config");
+const { v4: uuidv4 } = require("uuid");
 const logger = require("../logs/logger");
 
 exports.listPosts = async (req, res, next) => {
@@ -7,6 +7,7 @@ exports.listPosts = async (req, res, next) => {
   const roleUser = req.session.role ? req.session.role : "user";
   const email = res.locals.user.email;
   const post = await Posts.findAll();
+  console.log(post);
   const userData = res.locals.user;
   res.render("posts", {
     title: "List",
@@ -30,7 +31,10 @@ exports.releasePost = async (req, res) => {
   const username = res.locals.user.username;
   const email = res.locals.user.email;
   const data = req.body.entry;
+  console.log(req.params);
+  const generateUUID = uuidv4();
   await Posts.create({
+    uuid: generateUUID,
     title: data.title,
     content: data.content,
     author: username,
@@ -39,25 +43,26 @@ exports.releasePost = async (req, res) => {
   await res.redirect("/posts");
 };
 exports.deletePost = async (req, res, next) => {
-  const postId = req.params.id;
+  const postId = req.params.uuid;
   await Posts.destroy({
     where: {
-      id: postId,
+      uuid: postId,
     },
   });
   await res.redirect("/posts");
 };
 
 exports.updatePostForm = async (req, res) => {
-  const postId = req.params.id;
-  const username = res.locals.user.username;
-  const roleUser = req.session.role ? req.session.role : "user";
+  const postId = req.params.uuid;
   const post = await Posts.findAll({
     where: {
-      id: postId,
+      uuid: postId,
     },
   });
+  const username = res.locals.user.username;
+  const roleUser = req.session.role ? req.session.role : "user";
   await res.render("updateCard", {
+    uuid: postId,
     title: "Изменение поста",
     post: post,
     name: username,
@@ -65,7 +70,7 @@ exports.updatePostForm = async (req, res) => {
   });
 };
 exports.submitUpdatePost = async (req, res, next) => {
-  const entryId = req.params.id;
+  const entryId = req.params.uuid;
   const newData = {
     title: req.body.post.title,
     content: req.body.post.content,
@@ -74,7 +79,7 @@ exports.submitUpdatePost = async (req, res, next) => {
     { ...newData },
     {
       where: {
-        id: entryId,
+        uuid: entryId,
       },
     }
   );

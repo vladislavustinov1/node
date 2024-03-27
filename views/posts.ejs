@@ -20,10 +20,10 @@
           <h6>Запостил: <%= entry.author %></h6>
           <% if (entry.email_author == email || role == "administrator") { %>
           <div class="card-buttons">
-            <a href="/updateCard/<%= entry.id %>" class="card__update">
+            <a href="/updateCard/<%= entry.uuid %>" class="card__update">
               Изменить</a
             >
-            <a href="/deleteCard/<%= entry.id %>" class="card__delete"
+            <a href="/deleteCard/<%= entry.uuid %>" class="card__delete"
               >Удалить</a
             >
           </div>

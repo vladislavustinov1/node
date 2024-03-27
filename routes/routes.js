@@ -24,9 +24,9 @@ routes.get("/logout", login.logout);
 routes.get("/posts", post.listPosts);
 routes.get("/createPost", post.form);
 routes.post("/createPost", post.releasePost);
-routes.get("/updateCard/:id", post.updatePostForm);
-routes.post("/updateCard/:id", post.submitUpdatePost);
-routes.get("/deleteCard/:id", post.deletePost);
+routes.get("/updateCard/:uuid", post.updatePostForm);
+routes.post("/updateCard/:uuid", post.submitUpdatePost);
+routes.get("/deleteCard/:uuid", post.deletePost);
 
 routes.get(
   "/auth/yandex",

@@ -1,5 +1,6 @@
-const User = require("../models/users");
-const jwt = require("jsonwebtoken");
+const { User, Role } = require("../config/config");
+const { v4: uuidv4 } = require("uuid");
+const bcrypt = require("bcrypt");
 const logger = require("../logs/logger");
 
 exports.form = (req, res) => {
@@ -7,34 +8,53 @@ exports.form = (req, res) => {
   res.render("register", { username: username });
 };
 
-exports.registerUser = (req, res, next) => {
-  User.findByEmail(req.body.email, (err, searchUser) => {
-    if (err) return next(err);
-    if (searchUser.length > 0) {
-      return next("Пользователь уже существует");
+exports.registerUser = async (req, res, next) => {
+  await create(req.body, (err, result) => {
+    try {
+      req.session.name = result.dataValues.username;
+      req.session.email = result.dataValues.email;
+      req.session.role = result.dataValues.rolesUser;
+      res.redirect("/");
+    } catch (err) {
+      logger.error(`Возникла непредвиденная ошибка: ${err}`);
+      return next(err);
     }
-    User.create(req.body, next, (err) => {
-      if (err) return next(err);
-      req.session.email = req.body.email;
-      console.log(req.session.email);
-      req.session.name = req.body.name;
-      // jwt generation
-      const token = jwt.sign(
-        {
-          username: req.body.email,
-          email: req.body.name,
-        },
-        process.env.SECRET_JWT,
-        {
-          expiresIn: 36000000000,
-        }
-      );
-      logger.info(
-        `Токен создан для: ${req.body.email}, ${req.body.name}. Значение токена: ${token}`
-      );
-      res
-        .cookie("jwt", token, { httpOnly: true, maxAge: 36000000000 })
-        .redirect("/");
-    });
   });
 };
+
+async function create(dataFromForm, callback) {
+  try {
+    const user = await User.findOne({
+      where: {
+        email: [dataFromForm.email],
+      },
+    });
+    if (user) {
+      logger.error("Пользователь уже зарегистрирован");
+      return callback(null, null);
+    } else {
+      const generateUUID = uuidv4();
+      const searchRole = await Role.findOne({ where: { Role: ["user"] } });
+      const rolesUser = searchRole.dataValues.Role;
+      console.log(rolesUser);
+      const salt = await bcrypt.hash(dataFromForm.password, 10);
+      const hash = await bcrypt.hash(dataFromForm.password, salt);
+      const user = await User.create(
+        {
+          uuid: generateUUID,
+          username: dataFromForm.name,
+          password: hash,
+          email: dataFromForm.email,
+          age: dataFromForm.age,
+          secret_word: dataFromForm.secret_word,
+          rolesUser: rolesUser,
+        },
+        callback
+      );
+      return callback(null, user);
+    }
+  } catch (error) {
+    logger.error(`Ошибка в модуле создания пользователя: ${error}`);
+    return console.error(error);
+  }
+}

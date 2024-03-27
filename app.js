@@ -2,7 +2,6 @@ const express = require("express");
 const session = require("express-session");
 const userSession = require("./middleware/user_session");
 const path = require("path");
-require("dotenv").config();
 const favicon = require("express-favicon");
 const routes = require("./routes/routes");
 const logger = require("./logs/logger");
@@ -13,12 +12,12 @@ const passportFunctionVKontakte = require("./middleware/passport_vk");
 const passportFunctionGithub = require("./middleware/passport_github");
 const cookieSession = require("cookie-parser");
 const { sequelize } = require("./config/config");
-const jwt = require("jsonwebtoken");
 
 const app = express();
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "/views"));
 const port = "80";
+require("dotenv").config();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

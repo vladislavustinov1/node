@@ -1,7 +1,8 @@
 const { Sequelize, DataTypes } = require("sequelize");
+require("dotenv").config();
 
 const sequelize = new Sequelize(
-  "usersdb",
+  "usersdbsequelize",
   process.env.MYSQL_LOGIN,
   process.env.MYSQL_PASSWORD,
   {
@@ -13,10 +14,9 @@ const sequelize = new Sequelize(
 const Posts = sequelize.define(
   "posts",
   {
-    id: {
+    uuid: {
       primaryKey: true,
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
+      type: DataTypes.CHAR(36),
       allowNull: false,
     },
     title: {
@@ -52,10 +52,9 @@ const Posts = sequelize.define(
 const User = sequelize.define(
   "users",
   {
-    id: {
+    uuid: {
       primaryKey: true,
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
+      type: DataTypes.CHAR(36),
       allowNull: false,
     },
     username: { type: DataTypes.STRING, allowNull: false },

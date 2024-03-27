@@ -26,6 +26,7 @@
     "passport-vkontakte": "^0.5.0",
     "passport-yandex": "^0.0.5",
     "sequelize": "^6.37.1",
+    "uuid": "^9.0.1",
     "winston": "^3.11.0"
   },
   "devDependencies": {
