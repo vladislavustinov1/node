@@ -3,6 +3,7 @@ const routes = express.Router();
 const register = require("../controllers/registerController");
 const login = require("../controllers/login");
 const post = require("../controllers/post");
+const profile = require("../controllers/profile");
 const passport = require("passport");
 const checkValidity = require("../middleware/validate_data");
 
@@ -27,6 +28,10 @@ routes.post("/createPost", post.releasePost);
 routes.get("/updateCard/:uuid", post.updatePostForm);
 routes.post("/updateCard/:uuid", post.submitUpdatePost);
 routes.get("/deleteCard/:uuid", post.deletePost);
+
+routes.get("/profile/:uuid", profile.getProfile);
+routes.post("/profile/:uuid");
+routes.post("/profile/:uuid/changeEmail", profile.changeEmail);
 
 routes.get(
   "/auth/yandex",

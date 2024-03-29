@@ -43,6 +43,7 @@ passportFunctionVKontakte(passport);
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.static(path.join(__dirname, "css")));
 app.use(express.static(path.join(__dirname, "images")));
+app.use("/images", express.static(__dirname + "images"));
 app.use(
   "/css/bootstrap.css",
   express.static(

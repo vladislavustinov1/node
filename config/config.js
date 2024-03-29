@@ -58,11 +58,16 @@ const User = sequelize.define(
       allowNull: false,
     },
     username: { type: DataTypes.STRING, allowNull: false },
-    password: { type: DataTypes.STRING, allowNull: false, unique: true },
+    password: { type: DataTypes.STRING, allowNull: true, unique: true },
     email: { type: DataTypes.STRING, allowNull: false, unique: true },
     age: { type: DataTypes.INTEGER, allowNull: false },
     secret_word: { type: DataTypes.STRING, allowNull: false },
     rolesUser: { type: DataTypes.STRING, allowNull: false },
+    avatar: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: `/images/defaultAvatar.png`,
+    },
   },
   { timestamps: false }
 );

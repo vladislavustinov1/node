@@ -201,4 +201,21 @@
   justify-content: center;
   margin-top: 50px;
   gap: 25px;
-}/*# sourceMappingURL=index.css.map */
+} /*# sourceMappingURL=index.css.map */
+.profile__data {
+  display: grid;
+  grid-template-columns: 250px 400px;
+}
+.data__user_info {
+}
+.user__profile {
+  margin: 25px 0 50px 0;
+}
+.data__status_info,
+.post__empty {
+  font-style: italic;
+}
+.data__avatar {
+  max-width: 250px;
+  max-height: 250px;
+}

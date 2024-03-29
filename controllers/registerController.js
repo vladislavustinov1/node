@@ -45,6 +45,7 @@ async function create(dataFromForm, callback) {
           username: dataFromForm.name,
           password: hash,
           email: dataFromForm.email,
+          registerEmail: dataFromForm.email,
           age: dataFromForm.age,
           secret_word: dataFromForm.secret_word,
           rolesUser: rolesUser,
