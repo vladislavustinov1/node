@@ -4,8 +4,6 @@ const { v4: uuidv4 } = require("uuid");
 
 function passportFunctionGithub(passport) {
   passport.serializeUser(async function (user, doneGT) {
-    console.log(user);
-    console.log("Github serialize");
     const emailAndImage = function () {
       const arrayForEmailAndPicture = [];
       if (user.provider == "google") {

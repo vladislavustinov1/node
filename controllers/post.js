@@ -7,7 +7,6 @@ exports.listPosts = async (req, res, next) => {
   const roleUser = req.session.role ? req.session.role : "user";
   const email = res.locals.user.email;
   const post = await Posts.findAll();
-  console.log(post);
   const userData = res.locals.user;
   res.render("posts", {
     title: "List",
@@ -31,7 +30,6 @@ exports.releasePost = async (req, res) => {
   const username = res.locals.user.username;
   const email = res.locals.user.email;
   const data = req.body.entry;
-  console.log(req.params);
   const generateUUID = uuidv4();
   await Posts.create({
     uuid: generateUUID,

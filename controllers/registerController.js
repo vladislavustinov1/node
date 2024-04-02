@@ -9,53 +9,38 @@ exports.form = (req, res) => {
 };
 
 exports.registerUser = async (req, res, next) => {
-  await create(req.body, (err, result) => {
-    try {
-      req.session.name = result.dataValues.username;
-      req.session.email = result.dataValues.email;
-      req.session.role = result.dataValues.rolesUser;
-      res.redirect("/");
-    } catch (err) {
-      logger.error(`Возникла непредвиденная ошибка: ${err}`);
-      return next(err);
-    }
-  });
-};
-
-async function create(dataFromForm, callback) {
   try {
     const user = await User.findOne({
       where: {
-        email: [dataFromForm.email],
+        email: [req.body.email],
       },
     });
     if (user) {
       logger.error("Пользователь уже зарегистрирован");
-      return callback(null, null);
+      return res.redirect("/");
     } else {
       const generateUUID = uuidv4();
       const searchRole = await Role.findOne({ where: { Role: ["user"] } });
       const rolesUser = searchRole.dataValues.Role;
-      console.log(rolesUser);
-      const salt = await bcrypt.hash(dataFromForm.password, 10);
-      const hash = await bcrypt.hash(dataFromForm.password, salt);
-      const user = await User.create(
-        {
-          uuid: generateUUID,
-          username: dataFromForm.name,
-          password: hash,
-          email: dataFromForm.email,
-          registerEmail: dataFromForm.email,
-          age: dataFromForm.age,
-          secret_word: dataFromForm.secret_word,
-          rolesUser: rolesUser,
-        },
-        callback
-      );
-      return callback(null, user);
+      const salt = await bcrypt.hash(req.body.password, 10);
+      const hash = await bcrypt.hash(req.body.password, salt);
+      await User.create({
+        uuid: generateUUID,
+        username: req.body.name,
+        password: hash,
+        email: req.body.email,
+        registerEmail: req.body.email,
+        age: req.body.age,
+        secret_word: req.body.secret_word,
+        rolesUser: rolesUser,
+      });
+      req.session.name = req.body.name;
+      req.session.email = req.body.email;
+      req.session.role = rolesUser;
+      return res.redirect("/");
     }
   } catch (error) {
     logger.error(`Ошибка в модуле создания пользователя: ${error}`);
     return console.error(error);
   }
-}
+};

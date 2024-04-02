@@ -29,7 +29,6 @@ exports.getProfile = async (req, res, next) => {
 exports.changeEmail = async (req, res, next) => {
   const currentEmail = req.body.currentEmail;
   const newEmail = req.body.newEmail;
-  console.log(res.locals.user.email);
   const user = await User.findOne({ where: { email: res.locals.user.email } });
   if (user.email === currentEmail && res.locals.user.entryType === "form") {
     await User.update({ email: newEmail }, { where: { email: currentEmail } });
